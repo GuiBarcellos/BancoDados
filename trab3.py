@@ -117,25 +117,48 @@ def busca_fornecedor():
 
 def tela_opcoes():
 	global screenoptions
+
 	screenlogin.destroy()
 	screenoptions = Tk()
 	screenoptions.title("Busca")
 	screenoptions.geometry("650x520+%d+%d" %(posx, posy))
-
-	Label(screenoptions, text = "O que voce deseja buscar?", fg = "black", font = ("Calibri", 15)).pack()
-	Label(screenoptions, text = "").pack()
-
-	Button(screenoptions, text = "Aluno",width = 20, height = 3, command = busca_aluno).pack()
-	Button(screenoptions, text = "Professor", width = 20, height = 3, command = busca_professor).pack()
-	Button(screenoptions, text = "Turma", width = 20, height = 3, command = busca_turma).pack()
-	Button(screenoptions, text = "Arte Marcial", width = 20, height = 3, command = busca_arte_marcial).pack()
-	Button(screenoptions, text = "Imovel", width = 20, height = 3, command = busca_imovel).pack()
-	Button(screenoptions, text = "Produto", width = 20, height = 3, command = busca_produto).pack()
-	Button(screenoptions, text = "Fornecedor", width = 20, height = 3, command = busca_fornecedor).pack()
+	screenoptions['bg'] = '#F5F5F5'
 	
-	bsair = Button(screenoptions, text = "Sair", command = lambda: changeWindowSair(screenoptions))
+	lb1 = Label(screenoptions, text = "O que voce deseja buscar?", bg = '#F5F5F5', fg = "black", font = "Garamond")
+	lb1.place(relx=0.5, rely=0.05, anchor=CENTER)
+	
+	bt1=Button(screenoptions, text = "Aluno",width = 20, height = 2, font = 'Garamond',  bd=5, bg = '#A9A9A9', command = busca_aluno)
+	bt1.place(relx=0.5, rely=0.2, anchor=CENTER)
+	
+	bt2=Button(screenoptions, text = "Professor", width = 20, height = 2, font = 'Garamond',  bd=5, bg = '#A9A9A9', command = busca_professor)
+	bt2.place(relx=0.5, rely=0.3, anchor=CENTER)
+		
+	bt3=Button(screenoptions, text = "Turma", width = 20, height = 2, font = 'Garamond',  bd=5, bg = '#A9A9A9', command = busca_turma)
+	bt3.place(relx=0.5, rely=0.4, anchor=CENTER)
+	
+	bt4=Button(screenoptions, text = "Arte Marcial", width = 20, height = 2,  font = 'Garamond',  bd=5, bg = '#A9A9A9', command = busca_arte_marcial)
+	bt4.place(relx=0.5, rely=0.5, anchor=CENTER)
+	
+	bt5=Button(screenoptions, text = "Imovel", width = 20, height = 2, font = 'Garamond',  bd=5, bg = '#A9A9A9', command = busca_imovel)
+	bt5.place(relx=0.5, rely=0.6, anchor=CENTER)
+	
+	bt6=Button(screenoptions, text = "Produto", width = 20, height= 2 ,font = 'Garamond',  bd=5, bg = '#A9A9A9', command = busca_produto)
+	bt6.place(relx=0.5, rely=0.7, anchor=CENTER)
+	
+	bt7=Button(screenoptions, text = "Fornecedor", width = 20, height = 2, font = 'Garamond',  bd=5, bg = '#A9A9A9', command = busca_fornecedor)
+	bt7.place(relx=0.5, rely=0.8, anchor=CENTER)
+	
+	bsair = Button(screenoptions, text = "Sair", font = 'Garamond',  bd=5, bg = '#A9A9A9', command = lambda: changeWindowSair(screenoptions))
 	bsair.place(x=0, y=0)
 	
+	bsair.config(highlightbackground='#F5F5F5')
+	bt1.config(highlightbackground='#F5F5F5')
+	bt2.config(highlightbackground='#F5F5F5')
+	bt3.config(highlightbackground='#F5F5F5')
+	bt4.config(highlightbackground='#F5F5F5')
+	bt5.config(highlightbackground='#F5F5F5')
+	bt6.config(highlightbackground='#F5F5F5')
+	bt7.config(highlightbackground='#F5F5F5')
 	
 	screenoptions.mainloop()	
 
