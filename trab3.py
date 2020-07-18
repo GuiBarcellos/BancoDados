@@ -2,6 +2,27 @@ from tkinter import *
 
 #INSIRA CODIGO BD AQUI
 
+def changeWindow21(screen):
+	screen.destroy()
+	main_screen()
+
+def changeWindow32(screen):
+	screen.destroy()
+	register()
+	
+def changeWindow12_login(screen):
+	screen.destroy()
+	login()
+	
+def changeWindow12_register(screen):
+	screen.destroy()
+	register()
+
+def changeWindowSair(screen):
+	screen.destroy()
+	main_screen()	
+	
+	
 def busca_aluno():
 	global screenbuscaaluno
 	screenoptions.destroy()
@@ -82,22 +103,29 @@ def tela_opcoes():
 	Button(screenoptions, text = "Imovel", width = 20, height = 3, command = busca_imovel).pack()
 	Button(screenoptions, text = "Produto", width = 20, height = 3, command = busca_produto).pack()
 	Button(screenoptions, text = "Fornecedor", width = 20, height = 3, command = busca_fornecedor).pack()
-
+	
+	bsair = Button(screenoptions, text = "Sair", command = lambda: changeWindowSair(screenoptions))
+	bsair.place(x=0, y=0)
+	
+	
 	screenoptions.mainloop()	
 
-def login_verify():
+
+def login_verify(flag):	
+	
 	user_login = username_verify.get()
 	password_login = password_verify.get()
-
+	 
 	if user_login == "gui": #Aqui verifica na base dados se o login existe
 		print("Login Sucesso")
 		tela_opcoes()
 		
 	else:
-		Label(screenlogin, text = "Credencias incorretas! Tente novamente", fg = "red", font = ("Calibri", 12)).pack()
+		if flag[-1] == 1:
+			Label(screenlogin, text = "Credencias incorretas! Tente novamente", fg = "red", font = ("Calibri", 12)).pack()
 		username_verify.delete(0, END)
 		password_verify.delete(0, END)
-
+		flag.append(0)
 	
 
 """
@@ -199,6 +227,9 @@ def register_student():
 	Label(screenregstud, text = "").pack()
 	Button(screenregstud, text = "Register", height = 1, command = cadastra_estudante_banco).pack()
 	
+	bvoltar = Button(screenregstud, text = "Voltar", command = lambda: changeWindow32(screenregstud))
+	bvoltar.place(x=0, y=0)
+	
 	screenregstud.mainloop()
 
 
@@ -255,9 +286,13 @@ def register_professor():
 	arte_marcial_professor_entry = Entry(screenregprof, textvariable = arte_marcial)
 	arte_marcial_professor_entry.pack()
 	
-
+	
 	Label(screenregprof, text = "").pack()
 	Button(screenregprof, text = "Register", height = 1, command = cadastra_professor_banco).pack()
+	
+	bvoltar = Button(screenregprof, text = "Voltar", command = lambda: changeWindow32(screenregprof))
+	bvoltar.place(x=0, y=0)
+	
 	screenregprof.mainloop()
 
 def cadastra_supplier_banco():
@@ -310,6 +345,9 @@ def register_supplier():
 	Label(screenregsupp, text = "").pack()
 	Button(screenregsupp, text = "Register", height = 1, command = cadastra_supplier_banco).pack()
 	
+	bvoltar = Button(screenregsupp, text = "Voltar", command = lambda: changeWindow32(screenregsupp))
+	bvoltar.place(x=0, y=0)
+	
 	screenregsupp.mainloop()
 
 def cadastra_owner_banco():
@@ -360,12 +398,16 @@ def register_owner():
 	Label(screenregowner, text = "").pack()
 	Button(screenregowner, text = "Register", height = 1, command = cadastra_owner_banco).pack()
 	
+	
+	bvoltar = Button(screenregowner, text = "Voltar", command = lambda: changeWindow32(screenregowner))
+	bvoltar.place(x=0, y=0)
+	
 	screenregowner.mainloop()
 
 
 def register():
 	global screenreg
-	screen.destroy()
+
 	screenreg = Tk()
 	screenreg.title("Register")
 	screenreg.geometry("650x520+%d+%d" %(posx, posy))
@@ -375,7 +417,13 @@ def register():
 	Button(screenreg, text = "Professor", width = 20, height = 4, command = register_professor).pack()
 	Button(screenreg, text = "Fornecedor", width = 20, height = 4, command = register_supplier).pack()
 	Button(screenreg, text = "Locador", width = 20, height = 4, command = register_owner).pack() 
+	
+	bvoltar = Button(screenreg, text = "Voltar", command = lambda: changeWindow21(screenreg))
+	bvoltar.place(x=0, y=0)
+	
 	screenreg.mainloop()
+	
+	
 
 
 
@@ -384,11 +432,8 @@ def login():
 	global screenlogin
 	global username_verify
 	global password_verify
-
-	username_verify = StringVar()
-	password_verify = StringVar()
+	flag = [1]
 	
-	screen.destroy()	
 	screenlogin = Tk()
 	screenlogin.title("Login")
 	screenlogin.geometry("650x520+%d+%d" %(posx, posy))
@@ -403,9 +448,9 @@ def login():
 	password_verify = Entry(screenlogin, textvariable = password, show = "*")
 	password_verify.pack()
 	Label(screenlogin, text = "").pack() 
-	Button(screenlogin, text = "Login", command = login_verify).pack()
-
-
+	Button(screenlogin, text = "Login", command = lambda: login_verify(flag)).pack()
+	bvoltar = Button(screenlogin, text = "Voltar", command = lambda: changeWindow21(screenlogin))
+	bvoltar.place(x=0, y=0)
 	
 	screenlogin.mainloop()
 
@@ -449,8 +494,8 @@ def main_screen():
 	
 	#lb = Label(text = "Luta Luta", bg = '#D2B48C', width = "300", height = "2", font = ("Times", 13)).pack()
 	
-	bt1 = Button(text = "Login", height = "2", relief = 'groove', bd=9, bg = '#D2B48C',	width = "20", command = login, font = ("Times", 13))
-	bt2 = Button(text = "Register",height = "2", relief = 'groove', bd=9, bg ='#D2B48C', width = "20", command = register, font = ("Times", 13))
+	bt1 = Button(text = "Login", height = "2", relief = 'groove', bd=9, bg = '#D2B48C',	width = "20", command = lambda: changeWindow12_login(screen), font = ("Times", 13))
+	bt2 = Button(text = "Register",height = "2", relief = 'groove', bd=9, bg ='#D2B48C', width = "20", command = lambda: changeWindow12_register(screen), font = ("Times", 13))
 	bt1.config(highlightbackground='black')
 	bt2.config(highlightbackground='black')
 	
