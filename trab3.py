@@ -2,48 +2,128 @@ from tkinter import *
 
 #INSIRA CODIGO BD AQUI
 
+def busca_aluno():
+	global screenbuscaaluno
+	screenoptions.destroy()
+	screenbuscaaluno = Tk()
+	screenbuscaaluno.title("Busca por Aluno")
+	screenbuscaaluno.geometry("650x520+%d+%d" %(posx, posy))
 
+	screenbuscaaluno.mainloop()
+
+def busca_professor():
+	global screenbuscaprofessor
+	screenoptions.destroy()
+	screenbuscaprofessor = Tk()
+	screenbuscaprofessor.title("Busca por Professor")
+	screenbuscaprofessor.geometry("650x520+%d+%d" %(posx, posy))
+
+	screenbuscaprofessor.mainloop()
+
+def busca_turma():
+	global screenbuscaturma
+	screenoptions.destroy()
+	screenbuscaturma = Tk()
+	screenbuscaturma.title("Busca por Turma")
+	screenbuscaturma.geometry("650x520+%d+%d" %(posx, posy))
+
+	screenbuscaturma.mainloop()
+
+def busca_arte_marcial():
+	global screenbuscaartemarcial
+	screenoptions.destroy()
+	screenbuscaartemarcial = Tk()
+	screenbuscaartemarcial.title("Busca por Arte Marcial")
+	screenbuscaartemarcial.geometry("650x520+%d+%d" %(posx, posy))
+
+	screenbuscaartemarcial.mainloop()
+
+def busca_imovel():
+	global screenbuscaimovel
+	screenoptions.destroy()
+	screenbuscaimovel = Tk()
+	screenbuscaimovel.title("Busca por Imovel")
+	screenbuscaimovel.geometry("650x520+%d+%d" %(posx, posy))
+
+	screenbuscaimovel.mainloop()
+
+def busca_produto():
+	global screenbuscaproduto
+	screenoptions.destroy()
+	screenbuscaproduto = Tk()
+	screenbuscaproduto.title("Busca por Produto")
+	screenbuscaproduto.geometry("650x520+%d+%d" %(posx, posy))
+
+	screenbuscaproduto.mainloop()
+
+def busca_fornecedor():			
+	global screenbuscafornecedor
+	screenoptions.destroy()
+	screenbuscafornecedor = Tk()
+	screenbuscafornecedor.title("Busca por Fornecedor")
+	screenbuscafornecedor.geometry("650x520+%d+%d" %(posx, posy))
+
+	screenbuscafornecedor.mainloop()
+
+def tela_opcoes():
+	global screenoptions
+	screenlogin.destroy()
+	screenoptions = Tk()
+	screenoptions.title("Busca")
+	screenoptions.geometry("650x520+%d+%d" %(posx, posy))
+
+	Label(screenoptions, text = "O que voce deseja buscar?", fg = "black", font = ("Calibri", 15)).pack()
+	Label(screenoptions, text = "").pack()
+
+	Button(screenoptions, text = "Aluno",width = 20, height = 3, command = busca_aluno).pack()
+	Button(screenoptions, text = "Professor", width = 20, height = 3, command = busca_professor).pack()
+	Button(screenoptions, text = "Turma", width = 20, height = 3, command = busca_turma).pack()
+	Button(screenoptions, text = "Arte Marcial", width = 20, height = 3, command = busca_arte_marcial).pack()
+	Button(screenoptions, text = "Imovel", width = 20, height = 3, command = busca_imovel).pack()
+	Button(screenoptions, text = "Produto", width = 20, height = 3, command = busca_produto).pack()
+	Button(screenoptions, text = "Fornecedor", width = 20, height = 3, command = busca_fornecedor).pack()
+
+	screenoptions.mainloop()	
 
 def login_verify():
-	username1 = username_verify.get()
-	password1 = password_verify.get()
-	username_entry1.delete(0, END)
-	password_entry1.delete(0, END)
+	user_login = username_verify.get()
+	password_login = password_verify.get()
+
+	if user_login == "gui": #Aqui verifica na base dados se o login existe
+		print("Login Sucesso")
+		tela_opcoes()
+		
+	else:
+		Label(screenlogin, text = "Credencias incorretas! Tente novamente", fg = "red", font = ("Calibri", 12)).pack()
+		username_verify.delete(0, END)
+		password_verify.delete(0, END)
+
+	
 
 """
 def register_user():
 	username_info = username.get()
 	password_info = password.get()
-
 	file = open(username_info, "w")
 	file.write(username_info+"\n")
 	file.write(password_info+"\n")
 	file.close()
-
 	username_entry.delete(0, END)
 	password_entry.delete(0, END)
-
 	Label(screen1, text = "Registro concluido", fg = "green", font = ("Calibri", 12)).pack()
-
-
-
 def register():
 	global screen1
 	screen1 = Toplevel(screen)
 	screen1.title("Register")
 	screen1.geometry("600x350")
-
 	global username
 	global password
 	global username_entry
 	global password_entry
-
 	username = StringVar()
 	password = StringVar()
-
 	Label(screen1, text = "Preencha os dados abaixo:").pack()
 	Label(screen1, text = "").pack()
-
 	Label(screen1, text = "Username * ").pack()
 	username_entry = Entry(screen1, textvariable = username)
 	username_entry.pack()
@@ -301,36 +381,33 @@ def register():
 
 def login():
 	
-	global screen2
+	global screenlogin
 	global username_verify
 	global password_verify
-	global username_entry1
-	global password_entry1
 
 	username_verify = StringVar()
 	password_verify = StringVar()
 	
 	screen.destroy()	
-	screen2 = Tk()
-	screen2.title("Login")
-	screen2.geometry("650x520+%d+%d" %(posx, posy))
+	screenlogin = Tk()
+	screenlogin.title("Login")
+	screenlogin.geometry("650x520+%d+%d" %(posx, posy))
 
-	Label(screen2, text = "Faca login com seus dados:").pack()
-	Label(screen2, text = "").pack()
+	Label(screenlogin, text = "Faca login com seus dados:").pack()
+	Label(screenlogin, text = "").pack()
 
-	Label(screen2, text = "Username * ").pack()
-	username_entry1 = Entry(screen2, textvariable = username_verify)
-	username_entry1.pack()
-	Label(screen2, text = "Password * ").pack()
-	password_entry1 = Entry(screen2, textvariable = password_verify, show = "*")
-	password_entry1.pack()
-	Label(screen2, text = "").pack() 
-	Button(screen2, text = "Login", command = login_verify).pack()
+	Label(screenlogin, text = "Username * ").pack()
+	username_verify = Entry(screenlogin, textvariable = username)
+	username_verify.pack()
+	Label(screenlogin, text = "Password * ").pack()
+	password_verify = Entry(screenlogin, textvariable = password, show = "*")
+	password_verify.pack()
+	Label(screenlogin, text = "").pack() 
+	Button(screenlogin, text = "Login", command = login_verify).pack()
 
-	username_entry.delete(0, END)
-	password_entry.delete(0, END)
+
 	
-	screen2.mainloop()
+	screenlogin.mainloop()
 
 def main_screen():
 	global screen
