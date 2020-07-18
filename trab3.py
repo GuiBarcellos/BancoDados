@@ -3,14 +3,13 @@ from tkinter import *
 #INSIRA CODIGO BD AQUI
 
 
-"""
+
 def login_verify():
 	username1 = username_verify.get()
 	password1 = password_verify.get()
 	username_entry1.delete(0, END)
 	password_entry1.delete(0, END)
 
-"""	
 """
 def register_user():
 	username_info = username.get()
@@ -56,7 +55,6 @@ def register():
 """
 def cadastra_estudante_banco():
 	
-
 	username_student_entry.delete(0,END)
 	password_student_entry.delete(0, END)
 	cpf_student_entry.delete(0,END)
@@ -72,9 +70,10 @@ def cadastra_estudante_banco():
 
 def register_student():
 	global screenregstud
-	screenregstud = Toplevel(screen)
+	screenreg.destroy()
+	screenregstud = Tk()
 	screenregstud.title("Registro Estudante")
-	screenregstud.geometry("650x520")
+	screenregstud.geometry("650x520+%d+%d" %(posx, posy))
 
 	global username_student_entry
 	global password_student_entry
@@ -117,10 +116,10 @@ def register_student():
 	sexo_student_entry = Entry(screenregstud, textvariable = sexo)
 	sexo_student_entry.pack()
 
-
 	Label(screenregstud, text = "").pack()
 	Button(screenregstud, text = "Register", height = 1, command = cadastra_estudante_banco).pack()
-
+	
+	screenregstud.mainloop()
 
 
 def cadastra_professor_banco():
@@ -138,9 +137,10 @@ def cadastra_professor_banco():
 
 def register_professor():
 	global screenregprof
-	screenregprof = Toplevel(screen)
+	screenreg.destroy()
+	screenregprof = Tk()
 	screenregprof.title("Registro Professor")
-	screenregprof.geometry("650x520")
+	screenregprof.geometry("650x520+%d+%d" %(posx, posy))
 
 	global username_professor_entry
 	global password_professor_entry
@@ -178,7 +178,7 @@ def register_professor():
 
 	Label(screenregprof, text = "").pack()
 	Button(screenregprof, text = "Register", height = 1, command = cadastra_professor_banco).pack()
-
+	screenregprof.mainloop()
 
 def cadastra_supplier_banco():
 	
@@ -195,9 +195,10 @@ def cadastra_supplier_banco():
 def register_supplier():
 	
 	global screenregsupp
-	screenregsupp = Toplevel(screen)
+	screenreg.destroy()
+	screenregsupp = Tk()
 	screenregsupp.title("Registro Fornecedor")
-	screenregsupp.geometry("650x520")
+	screenregsupp.geometry("650x520+%d+%d" %(posx, posy))
 
 	global username_supplier_entry
 	global password_supplier_entry
@@ -228,7 +229,8 @@ def register_supplier():
 
 	Label(screenregsupp, text = "").pack()
 	Button(screenregsupp, text = "Register", height = 1, command = cadastra_supplier_banco).pack()
-
+	
+	screenregsupp.mainloop()
 
 def cadastra_owner_banco():
 
@@ -244,9 +246,10 @@ def cadastra_owner_banco():
 
 def register_owner():
 	global screenregowner
-	screenregowner = Toplevel(screen)
+	screenreg.destroy()
+	screenregowner = Tk()
 	screenregowner.title("Registro Locador")
-	screenregowner.geometry("650x520")
+	screenregowner.geometry("650x520+%d+%d" %(posx, posy))
 
 	global username_owner_entry
 	global password_owner_entry
@@ -254,7 +257,6 @@ def register_owner():
 	global telefone_owner_entry
 	global nome_owner_entry
 	
-
 	Label(screenregowner, text = "Preencha os dados abaixo:").pack()
 	Label(screenregowner, text = "").pack()
 
@@ -277,21 +279,28 @@ def register_owner():
 
 	Label(screenregowner, text = "").pack()
 	Button(screenregowner, text = "Register", height = 1, command = cadastra_owner_banco).pack()
+	
+	screenregowner.mainloop()
 
 
 def register():
 	global screenreg
-	screenreg = Toplevel(screen)
+	screen.destroy()
+	screenreg = Tk()
 	screenreg.title("Register")
-	screenreg.geometry("600x350")
+	screenreg.geometry("650x520+%d+%d" %(posx, posy))
 
 	Label(screenreg, text = "Escolha o tipo de cadastro:", font = ("Calibri", 16)).pack()
 	Button(screenreg, text = "Aluno", width = 20, height = 4, command = register_student).pack()
 	Button(screenreg, text = "Professor", width = 20, height = 4, command = register_professor).pack()
 	Button(screenreg, text = "Fornecedor", width = 20, height = 4, command = register_supplier).pack()
 	Button(screenreg, text = "Locador", width = 20, height = 4, command = register_owner).pack() 
+	screenreg.mainloop()
+
+
 
 def login():
+	
 	global screen2
 	global username_verify
 	global password_verify
@@ -300,10 +309,11 @@ def login():
 
 	username_verify = StringVar()
 	password_verify = StringVar()
-
-	screen2 = Toplevel(screen)
+	
+	screen.destroy()	
+	screen2 = Tk()
 	screen2.title("Login")
-	screen2.geometry("600x350")
+	screen2.geometry("650x520+%d+%d" %(posx, posy))
 
 	Label(screen2, text = "Faca login com seus dados:").pack()
 	Label(screen2, text = "").pack()
@@ -314,44 +324,53 @@ def login():
 	Label(screen2, text = "Password * ").pack()
 	password_entry1 = Entry(screen2, textvariable = password_verify, show = "*")
 	password_entry1.pack()
-	Label(screen2, text = "").pack()
+	Label(screen2, text = "").pack() 
 	Button(screen2, text = "Login", command = login_verify).pack()
 
 	username_entry.delete(0, END)
 	password_entry.delete(0, END)
-
+	
+	screen2.mainloop()
 
 def main_screen():
-  global screen
-  screen = Tk()
-  screen.geometry("600x350")
-  screen.title("Luta Luta")
-  global username #Todos
-  global password #Todos
-  global cpf #Todos
-  global telefone #Todos
-  global nome #Todos
-  global graduacao #Aluno, Professor
-  global arte_marcial #Aluno, Professor
-  global sexo #Aluno
-  global idade #Aluno
-  username = StringVar()
-  password = StringVar()
-  cpf = StringVar()
-  telefone = StringVar()
-  nome = StringVar()
-  graduacao = StringVar()
-  arte_marcial = StringVar()
-  sexo = StringVar()
-  idade = StringVar()
+	global screen
+	global posx
+	global posy
+	screen = Tk()
+	
+	lscreen = screen.winfo_screenwidth()
+	ascreen = screen.winfo_screenheight()
+	posx = lscreen/2 - 650/2
+	posy = ascreen/2 - 520/2
 
+	screen.geometry("650x520+%d+%d"%(posx, posy))
+	screen.title("Luta Luta")
+	
+	global username #Todos
+	global password #Todos
+	global cpf #Todos
+	global telefone #Todos
+	global nome #Todos
+	global graduacao #Aluno, Professor
+	global arte_marcial #Aluno, Professor
+	global sexo #Aluno
+	global idade #Aluno
+	username = StringVar()
+	password = StringVar()
+	cpf = StringVar()
+	telefone = StringVar()
+	nome = StringVar()
+	graduacao = StringVar()
+	arte_marcial = StringVar()
+	sexo = StringVar()
+	idade = StringVar()
 
-  Label(text = "Luta Luta", bg = "grey", width = "300", height = "2", font = ("Calibri", 13)).pack()
-  Label(text = "").pack()
-  Button(text = "Login", height = "2", width = "30", command = login).pack()
-  Label(text = "").pack()
-  Button(text = "Register",height = "2", width = "30", command = register).pack()
-  screen.mainloop()
-
+	Label(text = "Luta Luta", bg = "grey", width = "300", height = "2", font = ("Calibri", 13)).pack()
+	Label(text = "").pack()
+	Button(text = "Login", height = "2", width = "30", command = login).pack()
+	Label(text = "").pack()
+	Button(text = "Register",height = "2", width = "30", command = register).pack()
+	
+	screen.mainloop()
 
 main_screen()
