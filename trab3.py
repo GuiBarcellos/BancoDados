@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 
 #INSIRA CODIGO BD AQUI
 
@@ -57,7 +58,52 @@ def busca_aluno():
 	screenoptions.destroy()
 	screenbuscaaluno = Tk()
 	screenbuscaaluno.title("Busca por Aluno")
-	screenbuscaaluno.geometry("650x520+%d+%d" %(posx, posy))
+	screenbuscaaluno.geometry("850x720+%d+%d" %(posx, posy))
+	screenbuscaaluno['bg'] = '#F5F5F5'
+
+	lbl_search = Label(screenbuscaaluno, text = "Search by:", bg = '#F5F5F5',fg = "black", font = ("times nem roman", 15, "bold"))
+	lbl_search.grid(row = 0, column = 0, pady = 10, padx = 10, sticky = "w")
+
+	clicked = StringVar()
+	clicked.set("Nome")
+	drop = OptionMenu(screenbuscaaluno, clicked,  "Nome", "CPF")
+	drop.place(relx = 0.21, rely = 0.015)
+	#drop.grid(row = 0, column = 0, pady = 10, padx = 200)
+
+	global search_aluno_entry
+	texto_busca = StringVar()
+
+	search_aluno_entry = Entry(screenbuscaaluno, textvariable = texto_busca, width = 30)
+	search_aluno_entry.place(relx = 0.35, rely = 0.025)
+
+	searchbtt = Button(screenbuscaaluno, text = "Search", width = 5).place(relx = 0.73, rely = 0.015)
+	showbtt = Button(screenbuscaaluno, text = "Show all", width = 5).place(relx = 0.85, rely = 0.015)
+
+#Table Frame----------------------------
+	table_frame = Frame(screenbuscaaluno, bd = 4, relief = RIDGE, bg = "white")
+	table_frame.place(x = 10, y = 100, width = 825, height = 600)	
+
+	scroll_x = Scrollbar(table_frame, orient = HORIZONTAL)
+	scroll_y = Scrollbar(table_frame, orient = VERTICAL)
+	student_table = ttk.Treeview(table_frame, columns = ("Cpf","Nome", "Idade", "Arte Marcial", "Telefone"), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
+	scroll_x.pack(side = BOTTOM, fill = X)
+	scroll_y.pack(side = RIGHT, fill = Y)
+	scroll_x.config(command=student_table.xview)
+	scroll_y.config(command=student_table.yview)
+	student_table.heading("Cpf", text="CPF")
+	student_table.heading("Nome", text="Nome")
+	student_table.heading("Idade", text="Idade")
+	student_table.heading("Arte Marcial", text="Arte Marcial")
+	student_table.heading("Telefone", text="Telefone")
+	student_table['show']='headings'
+	student_table.column("Cpf", width=110)
+	student_table.column("Nome", width=200)
+	student_table.column("Idade", width=40)
+	student_table.column("Arte Marcial", width=80)
+	student_table.column("Telefone", width=80)
+	student_table.pack(fill=BOTH, expand=1)
+
+
 
 	screenbuscaaluno.mainloop()
 
