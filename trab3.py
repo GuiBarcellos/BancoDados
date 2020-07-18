@@ -21,6 +21,35 @@ def changeWindow12_register(screen):
 def changeWindowSair(screen):
 	screen.destroy()
 	main_screen()	
+
+def roundPolygon(x, y, sharpness, **kwargs):
+
+    if sharpness < 2:
+        sharpness = 2
+
+    ratioMultiplier = sharpness - 1
+    ratioDividend = sharpness
+
+    points = []
+
+    for i in range(len(x)):
+        points.append(x[i])
+        points.append(y[i])
+
+        if i != (len(x) - 1):
+            points.append((ratioMultiplier*x[i] + x[i + 1])/ratioDividend)
+            points.append((ratioMultiplier*y[i] + y[i + 1])/ratioDividend)
+            points.append((ratioMultiplier*x[i + 1] + x[i])/ratioDividend)
+            points.append((ratioMultiplier*y[i + 1] + y[i])/ratioDividend)
+        else:
+            points.append((ratioMultiplier*x[i] + x[0])/ratioDividend)
+            points.append((ratioMultiplier*y[i] + y[0])/ratioDividend)
+            points.append((ratioMultiplier*x[0] + x[i])/ratioDividend)
+            points.append((ratioMultiplier*y[0] + y[i])/ratioDividend)
+            points.append(x[0])
+            points.append(y[0])
+
+    return canvas.create_polygon(points, **kwargs, smooth=TRUE)
 	
 	
 def busca_aluno():
@@ -121,8 +150,8 @@ def login_verify(flag):
 		tela_opcoes()
 		
 	else:
-		if flag[-1] == 1:
-			Label(screenlogin, text = "Credencias incorretas! Tente novamente", fg = "red", font = ("Calibri", 12)).pack()
+		if flag[-1] == 1:	
+			Label(screenlogin, text = "Credencias incorretas! Tente novamente", bg = '#F5F5F5', fg = "red", font = ("Calibri", 12)).pack()
 		username_verify.delete(0, END)
 		password_verify.delete(0, END)
 		flag.append(0)
@@ -432,25 +461,41 @@ def login():
 	global screenlogin
 	global username_verify
 	global password_verify
+	global canvas
+	
 	flag = [1]
 	
 	screenlogin = Tk()
 	screenlogin.title("Login")
 	screenlogin.geometry("650x520+%d+%d" %(posx, posy))
 
-	Label(screenlogin, text = "Faca login com seus dados:").pack()
-	Label(screenlogin, text = "").pack()
-
-	Label(screenlogin, text = "Username * ").pack()
-	username_verify = Entry(screenlogin, textvariable = username)
-	username_verify.pack()
-	Label(screenlogin, text = "Password * ").pack()
-	password_verify = Entry(screenlogin, textvariable = password, show = "*")
-	password_verify.pack()
-	Label(screenlogin, text = "").pack() 
-	Button(screenlogin, text = "Login", command = lambda: login_verify(flag)).pack()
-	bvoltar = Button(screenlogin, text = "Voltar", command = lambda: changeWindow21(screenlogin))
+	canvas = Canvas(screenlogin, width=2000, height=2000, bg='#F5F5F5')
+	
+	my_rectangle = roundPolygon([165, 485, 485, 165], [420, 420, 100, 100], 10 , width=5, outline="black", fill="#F5F5F5")
+	canvas.place(x=0, y=0, relwidth=1.0, relheight=1.0)
+	
+	lb3 = Label(screenlogin, text = "Faca login com seus dados", bg = '#F5F5F5', font = ("Times", 15))
+	lb3.place(relx=0.5, rely=0.1, anchor=CENTER)
+	
+	lb1 = Label(screenlogin, text = "Username * ", bg='#F5F5F5')
+	lb1.place(relx=0.5, rely=0.3, anchor=CENTER)
+	et1 = username_verify = Entry(screenlogin, textvariable = username)
+	et1.place(relx=0.5, rely=0.35, anchor=CENTER)
+	
+	lb2 = Label(screenlogin, text = "Password * ", bg='#F5F5F5')
+	lb2.place(relx=0.5, rely=0.5, anchor=CENTER)
+	et2 = password_verify = Entry(screenlogin, textvariable = password, show = "*")
+	et2.place(relx=0.5, rely=0.55, anchor=CENTER)
+	
+	bt1 = Button(screenlogin, text = "Login", bd=5, bg = '#A9A9A9',command = lambda: login_verify(flag))
+	bt1.place(relx=0.5, rely=0.7, anchor=CENTER)
+	
+	bvoltar = Button(screenlogin, text = "Voltar", bd=5, bg = '#A9A9A9', command = lambda: changeWindow21(screenlogin))
 	bvoltar.place(x=0, y=0)
+	
+	bt1.config(highlightbackground='#F5F5F5')
+	bvoltar.config(highlightbackground='#F5F5F5')
+
 	
 	screenlogin.mainloop()
 
