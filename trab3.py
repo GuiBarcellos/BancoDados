@@ -442,11 +442,20 @@ def main_screen():
 	sexo = StringVar()
 	idade = StringVar()
 
-	Label(text = "Luta Luta", bg = "grey", width = "300", height = "2", font = ("Calibri", 13)).pack()
-	Label(text = "").pack()
-	Button(text = "Login", height = "2", width = "30", command = login).pack()
-	Label(text = "").pack()
-	Button(text = "Register",height = "2", width = "30", command = register).pack()
+	
+	img = PhotoImage(file="img-1.png")
+	lb_image = Label(screen, image=img)
+	lb_image.place(x=0, y=0, relwidth=1.0, relheight=1.0)
+	
+	#lb = Label(text = "Luta Luta", bg = '#D2B48C', width = "300", height = "2", font = ("Times", 13)).pack()
+	
+	bt1 = Button(text = "Login", height = "2", relief = 'groove', bd=9, bg = '#D2B48C',	width = "20", command = login, font = ("Times", 13))
+	bt2 = Button(text = "Register",height = "2", relief = 'groove', bd=9, bg ='#D2B48C', width = "20", command = register, font = ("Times", 13))
+	bt1.config(highlightbackground='black')
+	bt2.config(highlightbackground='black')
+	
+	bt1.place(relx=0.5, rely=0.4, anchor=CENTER)
+	bt2.place(relx=0.5, rely=0.6, anchor=CENTER)
 	
 	screen.mainloop()
 
