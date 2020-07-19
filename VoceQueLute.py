@@ -670,7 +670,10 @@ def register_student():
 	clicked_sexo.set("Masculino")
 	drop = OptionMenu(screenregstud, clicked_sexo, "Masculino", "Feminino")
 	drop.place(relx = 0.5, rely = 0.70)	
-	
+	drop['bg'] = '#A9A9A9'
+	drop['bd'] = 5
+	drop['font'] = 'Garamond'
+
 
 	bt1 = Button(screenregstud, text = "Registro", height = 1, font = 'Garamond',  bd=5, bg = '#A9A9A9', command = cadastra_estudante_banco)
 	bt1.config(highlightbackground='#F5F5F5')
@@ -1067,7 +1070,7 @@ def main_screen():
 	posy = ascreen/2 - 520/2
 
 	screen.geometry("650x520+%d+%d"%(posx, posy))
-	screen.title("Luta Luta")
+	screen.title("Você Que Lute")
 	
 	global username #Todos
 	global password #Todos
@@ -1106,8 +1109,6 @@ def main_screen():
 	img = PhotoImage(file="img-1.png")
 	lb_image = Label(screen, image=img)
 	lb_image.place(x=0, y=0, relwidth=1.0, relheight=1.0)
-	
-	#lb = Label(text = "Luta Luta", bg = '#D2B48C', width = "300", height = "2", font = ("Garamond", 13)).pack()
 	
 	bt1 = Button(text = "Login", height = "2", relief = 'groove', bd=9, bg = '#D2B48C',	width = "20", command = lambda: changeWindow12_login(screen), font = ("Garamond", 13))
 	bt2 = Button(text = "Registro",height = "2", relief = 'groove', bd=9, bg ='#D2B48C', width = "20", command = lambda: changeWindow12_register(screen), font = ("Garamond", 13))
