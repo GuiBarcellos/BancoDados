@@ -152,7 +152,7 @@ def searchAll():
 	for row in type:
 		student_table.insert("", "end", values=(row[1], row[0], row[2], row[3], row[4]))
 
-	print(type)
+
 
 def searchByCpf(db, cpf):
 	
@@ -170,7 +170,7 @@ def searchByCpf(db, cpf):
 	for row in type:
 		student_table.insert("", "end", values=(row[1], row[0], row[2], row[3], row[4]))
 
-	print(type)
+	
 
 def searchByName(db, nome):
 	
@@ -190,7 +190,7 @@ def searchByName(db, nome):
 
 	
 
-	print(type)
+	
 
 def search_cpf_nome():
 	
@@ -273,6 +273,52 @@ def busca_aluno():
 
 	screenbuscaaluno.mainloop()
 
+def searchAllProf():
+	
+	cursor = con.cursor()
+
+	command = """SELECT NOME, TELEFONE, ARTE, GRADUACAO FROM PROFESSOR, PESSOA
+				 WHERE PROFESSOR.CPF = PESSOA.CPF"""
+
+	cursor.execute(command)
+	type = cursor.fetchall()
+
+	
+	records = professor_table.get_children()
+	for element in records:
+		professor_table.delete(element)
+
+	for row in type:
+		professor_table.insert("", "end", values=(row[0], row[1], row[2], row[3]))
+
+
+
+def searchProfArte():
+	
+	texto_busca_professor = search_professor_entry.get()
+
+	cursor = con.cursor()
+
+	command = """SELECT NOME, TELEFONE, ARTE, GRADUACAO FROM PROFESSOR, PESSOA
+				 WHERE PROFESSOR.CPF = PESSOA.CPF AND
+				 UPPER(PROFESSOR.ARTE) = UPPER("""+"'"+texto_busca_professor+"'"+");"""
+				 
+
+
+	cursor.execute(command)
+	type = cursor.fetchall()
+
+	
+	records = professor_table.get_children()
+	for element in records:
+		professor_table.delete(element)
+
+	for row in type:
+		professor_table.insert("", "end", values=(row[0], row[1], row[2], row[3]))
+
+
+
+
 def busca_professor():
 	global screenbuscaprofessor
 	screenoptions.destroy()
@@ -284,6 +330,18 @@ def busca_professor():
 	lbl_search = Label(screenbuscaprofessor, text = "Qual arte marcial voce deseja praticar?:", bg = '#F5F5F5',fg = "black", font = ("times nem roman", 15, "bold"))
 	lbl_search.grid(row = 0, column = 0, pady = 10, padx = 10, sticky = "w")
 
+	global search_professor_entry
+	global texto_busca_professor 
+
+	texto_busca_professor = StringVar() 
+
+	search_professor_entry = Entry(screenbuscaprofessor, textvariable = texto_busca_professor, width = 30)
+	search_professor_entry.place(relx = 0.01, rely = 0.075)
+
+
+	searchbtt = Button(screenbuscaprofessor, text = "Buscar", width = 5, command = searchProfArte).place(relx = 0.33, rely = 0.070)
+
+	showbtt = Button(screenbuscaprofessor, text = "Mostrar todos professores", width = 20, command = searchAllProf).place(relx = 0.45, rely = 0.070)
 
 
 #Table Frame----------------------------

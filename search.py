@@ -1,5 +1,21 @@
 import psycopg2
 
+
+def searchProfArte(db, art)
+
+
+def searchProf(db):
+
+	cursor = db.cursor()
+
+	command = """SELECT NOME, TELEFONE, ARTE, GRADUACAO FROM PROFESSOR, PESSOA
+				 WHERE PROFESSOR.CPF = PESSOA.CPF"""
+
+	cursor.execute(command)
+	type = cursor.fetchall()
+	print(type)
+
+
 def searchByArtMonth(db, art, month):
 
 	cursor = db.cursor()
@@ -58,10 +74,8 @@ def searchByName(db, nome):
 	print(type)
 
 
-con = psycopg2.connect(database="mateus", user="mateus", password="mateus", host="127.0.0.1", port="5432")
+con = psycopg2.connect(database="BancoDados", user="gui", password="123", host="127.0.0.1", port="5432")
 print("Database opened successfully")
 
-arte = input()
 
-
-searchByArtMonth(con, arte, '3')
+searchProf(con, "karate")
