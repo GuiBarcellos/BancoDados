@@ -373,16 +373,130 @@ def busca_professor():
 	screenbuscaprofessor.mainloop()
 
 
+def searchAllArte():
+	
+	cursor = con.cursor()
+	
+	command = """SELECT CODIGO AS TURMA, N_ALUNOS, CIDADE, ARTE, EXTRACT(MONTH FROM DATA) AS MES FROM TURMA, TREINO, PROPORCIONA, IMOVEL 
+            WHERE CODIGO = CODIGO_TURMA AND
+            CODIGO_TURMA = TREINO_CODIGO AND
+            DATA = TREINO_DATA AND
+            PROPORCIONA.IMOVEL = IMOVEL.ID"""
+	
+	cursor.execute(command)
+	type = cursor.fetchall()
+	
+	records = artemarcial_table.get_children()
+	for element in records:
+		artemarcial_table.delete(element)
+
+	for row in type:
+		artemarcial_table.insert("", "end", values=(row[0], row[1], row[2], row[3], int(row[4])))
+
+	print(type)
+	
+
+
+def searchByArteMarcialMes(db, art, month):
+	cursor = db.cursor()
+
+	command = """SELECT CODIGO AS TURMA, N_ALUNOS, CIDADE, ARTE, EXTRACT(MONTH FROM DATA) AS MES FROM TURMA, TREINO, PROPORCIONA, IMOVEL 
+		WHERE CODIGO = CODIGO_TURMA AND
+		CODIGO_TURMA = TREINO_CODIGO AND
+		DATA = TREINO_DATA AND
+		PROPORCIONA.IMOVEL = IMOVEL.ID AND
+		UPPER(ARTE) = """ + "UPPER(" + "'" + art + "'" + ")"
+
+	if month != '-1':
+		command += "AND EXTRACT(MONTH FROM DATA) = " + "'" + month + "'"
+
+	cursor.execute(command)
+	type = cursor.fetchall()
+	
+	records = artemarcial_table.get_children()
+	for element in records:
+		artemarcial_table.delete(element)
+
+	for row in type:
+		artemarcial_table.insert("", "end", values=(row[0], row[1], row[2], row[3], int(row[4])))
+
+	print(type)
+
+
+def search_artemarcial_mes():
+	
+	texto_busca = search_artemarcial_entry.get()
+	option_search =  clicked_busca_artemarcial.get()
+	
+	print(option_search)
+	
+	if option_search == "Mês":
+		searchByArteMarcialMes(con, texto_busca, '-1')
+	else:
+		searchByArteMarcialMes(con, texto_busca, option_search)
 
 def busca_arte_marcial():
 	global screenbuscaartemarcial
 	screenoptions.destroy()
 	screenbuscaartemarcial = Tk()
 	screenbuscaartemarcial.title("Busca por Arte Marcial")
-	screenbuscaartemarcial.geometry("650x520+%d+%d" %(posx, posy))
+	screenbuscaartemarcial.geometry("850x720+%d+%d" %(posx, posy))
+	screenbuscaartemarcial['bg'] = '#F5F5F5'
+			
+	lbl_search = Label(screenbuscaartemarcial, text = "Arte Marcial:", bg = '#F5F5F5',fg = "black", font = ("Garamond", 15, "bold"))
+	lbl_search.place(relx = 0, rely = 0.025)
+	
+	global clicked_busca_artemarcial
+	global option_search
+
+	clicked_busca_artemarcial = StringVar()
+	
+	clicked_busca_artemarcial.set("Mês")
+	drop = OptionMenu(screenbuscaartemarcial, clicked_busca_artemarcial, "1","2","3","4","5","6","7","8","9","10","11","12")
+	drop.place(relx = 0.55, rely = 0.015)
+	#drop.grid(row = 0, column = 0, pady = 10, padx = 200)
+	
+	option_search = StringVar()
+	
+	global search_artemarcial_entry
+	global texto_busca 
+
+	texto_busca = StringVar() 
+
+	search_artemarcial_entry = Entry(screenbuscaartemarcial, textvariable = texto_busca, width = 30)
+	search_artemarcial_entry.place(relx = 0.21, rely = 0.025)
+
+	searchbtt = Button(screenbuscaartemarcial, text = "Buscar", width = 5, command = search_artemarcial_mes).place(relx = 0.73, rely = 0.015)
+
+	showbtt = Button(screenbuscaartemarcial, text = "Mostrar Tudo", width = 8, command = searchAllArte).place(relx = 0.85, rely = 0.015)
+
+#Table Frame----------------------------
+	global table_frame
+	table_frame = Frame(screenbuscaartemarcial, bd = 4, relief = RIDGE, bg = "white")
+	table_frame.place(x = 10, y = 100, width = 825, height = 600)	
+
+	scroll_x = Scrollbar(table_frame, orient = HORIZONTAL)
+	scroll_y = Scrollbar(table_frame, orient = VERTICAL)
+	global artemarcial_table
+	artemarcial_table = ttk.Treeview(table_frame, columns = ("Turma","Número de Alunos", "Cidade", "Arte Marcial", "Mês"), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
+	scroll_x.pack(side = BOTTOM, fill = X)
+	scroll_y.pack(side = RIGHT, fill = Y)
+	scroll_x.config(command=artemarcial_table.xview)
+	scroll_y.config(command=artemarcial_table.yview)
+	artemarcial_table.heading("Turma", text="Turma")
+	artemarcial_table.heading("Número de Alunos", text="Número de Alunos")
+	artemarcial_table.heading("Cidade", text="Cidade")
+	artemarcial_table.heading("Arte Marcial", text="Arte Marcial")
+	artemarcial_table.heading("Mês", text="Mês")
+	artemarcial_table['show']='headings'
+	artemarcial_table.column("Turma", width=50)
+	artemarcial_table.column("Número de Alunos", width=220)
+	artemarcial_table.column("Cidade", width=28)
+	artemarcial_table.column("Arte Marcial", width=80)
+	artemarcial_table.column("Mês", width=70)
+	artemarcial_table.pack(fill=BOTH, expand=1)
 
 	screenbuscaartemarcial.mainloop()
-
 
 
 def tela_opcoes():
@@ -998,7 +1112,7 @@ def main_screen():
 	screen.mainloop()
 
 
-con = psycopg2.connect(database="BancoDados", user="gui", password="123", host="127.0.0.1", port="5432")
+con = psycopg2.connect(database="igor", user="igor", password="macaco240", host="127.0.0.1", port="5432")
 print("Database opened successfully")
 
 
