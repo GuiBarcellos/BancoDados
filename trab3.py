@@ -135,8 +135,55 @@ def roundPolygon(x, y, sharpness, **kwargs):
             points.append(y[0])
 
     return canvas.create_polygon(points, **kwargs, smooth=TRUE)
+
+def searchAll():
 	
+	cursor = con.cursor()
+
+	cursor.execute("""SELECT PESSOA.NOME, ALUNO.CPF, ALUNO.IDADE, ALUNO.ARTE, PESSOA.TELEFONE FROM ALUNO, PESSOA
+						WHERE ALUNO.CPF = PESSOA.CPF;""")
+
+	type = cursor.fetchall()
+
+	print(type)
+
+def searchByCpf(db, cpf):
 	
+	cursor = db.cursor()
+
+	cursor.execute("""SELECT PESSOA.NOME, ALUNO.CPF, ALUNO.IDADE, ALUNO.ARTE, PESSOA.TELEFONE FROM ALUNO, PESSOA
+						WHERE ALUNO.CPF = PESSOA.CPF AND PESSOA.CPF = """ + "'" + cpf + "'" + ";")
+
+	type = cursor.fetchall()
+
+	print(type)
+
+def searchByName(db, nome):
+	
+	cursor = db.cursor()
+
+	cursor.execute("""SELECT PESSOA.NOME, ALUNO.CPF, ALUNO.IDADE, ALUNO.ARTE, PESSOA.TELEFONE FROM ALUNO, PESSOA
+						WHERE ALUNO.CPF = PESSOA.CPF AND UPPER(PESSOA.NOME) LIKE UPPER(""" + "'" + nome + "%" + "'" + ")" + ";")
+
+	type = cursor.fetchall()
+
+
+	print(type)
+
+def search_cpf_nome():
+	
+	texto_busca = search_aluno_entry.get()
+	option_search = clicked_busca_aluno.get()
+	print(texto_busca)
+
+	if option_search == "CPF":
+		searchByCpf(con, texto_busca)
+
+	elif option_search == "Nome":
+		searchByName(con, texto_busca)
+
+	
+
 def busca_aluno():
 	global screenbuscaaluno
 	screenoptions.destroy()
@@ -145,23 +192,34 @@ def busca_aluno():
 	screenbuscaaluno.geometry("850x720+%d+%d" %(posx, posy))
 	screenbuscaaluno['bg'] = '#F5F5F5'
 
-	lbl_search = Label(screenbuscaaluno, text = "Search by:", bg = '#F5F5F5',fg = "black", font = ("times nem roman", 15, "bold"))
+	lbl_search = Label(screenbuscaaluno, text = "Procurar por:", bg = '#F5F5F5',fg = "black", font = ("times nem roman", 15, "bold"))
 	lbl_search.grid(row = 0, column = 0, pady = 10, padx = 10, sticky = "w")
 
-	clicked = StringVar()
-	clicked.set("Nome")
-	drop = OptionMenu(screenbuscaaluno, clicked,  "Nome", "CPF")
+	global clicked_busca_aluno
+	global option_search
+
+	clicked_busca_aluno = StringVar()
+	
+	clicked_busca_aluno.set("Nome")
+	drop = OptionMenu(screenbuscaaluno, clicked_busca_aluno,  "Nome", "CPF")
 	drop.place(relx = 0.21, rely = 0.015)
 	#drop.grid(row = 0, column = 0, pady = 10, padx = 200)
+	
+	option_search = StringVar()
+	
 
 	global search_aluno_entry
-	texto_busca = StringVar()
+	global texto_busca 
+
+	texto_busca = StringVar() 
 
 	search_aluno_entry = Entry(screenbuscaaluno, textvariable = texto_busca, width = 30)
 	search_aluno_entry.place(relx = 0.35, rely = 0.025)
 
-	searchbtt = Button(screenbuscaaluno, text = "Search", width = 5).place(relx = 0.73, rely = 0.015)
-	showbtt = Button(screenbuscaaluno, text = "Show all", width = 5).place(relx = 0.85, rely = 0.015)
+
+	searchbtt = Button(screenbuscaaluno, text = "Buscar", width = 5, command = search_cpf_nome).place(relx = 0.73, rely = 0.015)
+
+	showbtt = Button(screenbuscaaluno, text = "Mostrar Tudo", width = 8, command = searchAll).place(relx = 0.85, rely = 0.015)
 
 #Table Frame----------------------------
 	table_frame = Frame(screenbuscaaluno, bd = 4, relief = RIDGE, bg = "white")
@@ -231,7 +289,6 @@ def tela_opcoes():
 	bt2=Button(screenoptions, text = "Professor", width = 20, height = 2, font = 'Garamond',  bd=5, bg = '#A9A9A9', command = busca_professor)
 	bt2.place(relx=0.5, rely=0.3, anchor=CENTER)
 		
-	
 	bt4=Button(screenoptions, text = "Arte Marcial", width = 20, height = 2,  font = 'Garamond',  bd=5, bg = '#A9A9A9', command = busca_arte_marcial)
 	bt4.place(relx=0.5, rely=0.4, anchor=CENTER)
 	
@@ -827,7 +884,7 @@ def main_screen():
 	screen.mainloop()
 
 
-con = psycopg2.connect(database="BancoDados", user="gui", password="123", host="127.0.0.1", port="5432")
+con = psycopg2.connect(database="mateus", user="mateus", password="mateus", host="127.0.0.1", port="5432")
 print("Database opened successfully")
 
 

@@ -61,7 +61,7 @@ SELECT C.TURMA, A.GRADUACAO, COUNT(A.GRADUACAO), P.NOME FROM ALUNO A
 
 
 /*
-Seleciona diversas informacoes sobre os alunos que treinaram
+Seleciona diversas informacoes sobre os alunos que nao treinaram
 em um determinado ano, nesse caso, 2008.
 Funcionando para uma possivel consulta no historico
 */
@@ -145,5 +145,12 @@ SELECT TREINO_CODIGO, COUNT(ID) FROM PROPORCIONA, IMOVEL
 	GROUP BY TREINO_CODIGO
 	ORDER BY TREINO_CODIGO;
 	
-	
 
+SELECT CODIGO AS TURMA, N_ALUNOS, CIDADE, ARTE, EXTRACT(MONTH FROM DATA) AS MES FROM TURMA, TREINO, PROPORCIONA, IMOVEL
+	WHERE CODIGO = CODIGO_TURMA AND
+	CODIGO_TURMA = TREINO_CODIGO AND
+	DATA = TREINO_DATA AND
+	PROPORCIONA.IMOVEL = IMOVEL.ID AND
+	UPPER(ARTE) = 'KARATE' AND
+	EXTRACT(MONTH FROM DATA) = '3'
+	
