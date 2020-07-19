@@ -144,7 +144,7 @@ def searchAll():
 						WHERE ALUNO.CPF = PESSOA.CPF;""")
 
 	type = cursor.fetchall()
-
+	
 	records = student_table.get_children()
 	for element in records:
 		student_table.delete(element)
@@ -278,7 +278,41 @@ def busca_professor():
 	screenoptions.destroy()
 	screenbuscaprofessor = Tk()
 	screenbuscaprofessor.title("Busca por Professor")
-	screenbuscaprofessor.geometry("650x520+%d+%d" %(posx, posy))
+	screenbuscaprofessor.geometry("850x720+%d+%d" %(posx, posy))
+	screenbuscaprofessor['bg'] = '#F5F5F5'
+
+	lbl_search = Label(screenbuscaprofessor, text = "Procurar por:", bg = '#F5F5F5',fg = "black", font = ("times nem roman", 15, "bold"))
+	lbl_search.grid(row = 0, column = 0, pady = 10, padx = 10, sticky = "w")
+
+
+
+#Table Frame----------------------------
+	global table_frame_professor
+	table_frame_professor = Frame(screenbuscaprofessor, bd = 4, relief = RIDGE, bg = "white")
+	table_frame_professor.place(x = 10, y = 100, width = 825, height = 600)	
+
+	scroll_x = Scrollbar(table_frame_professor, orient = HORIZONTAL)
+	scroll_y = Scrollbar(table_frame_professor, orient = VERTICAL)
+	global professor_table
+	professor_table = ttk.Treeview(table_frame_professor, columns = ("Cpf","Nome", "Ano", "Arte Marcial", "Telefone"), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
+	scroll_x.pack(side = BOTTOM, fill = X)
+	scroll_y.pack(side = RIGHT, fill = Y)
+	scroll_x.config(command=professor_table.xview)
+	scroll_y.config(command=professor_table.yview)
+	professor_table.heading("Cpf", text="CPF")
+	professor_table.heading("Nome", text="Nome")
+	professor_table.heading("Ano", text="Ano")
+	professor_table.heading("Arte Marcial", text="Arte Marcial")
+	professor_table.heading("Telefone", text="Telefone")
+	professor_table['show']='headings'
+	professor_table.column("Cpf", width=50)
+	professor_table.column("Nome", width=220)
+	professor_table.column("Ano", width=28)
+	professor_table.column("Arte Marcial", width=80)
+	professor_table.column("Telefone", width=70)
+	professor_table.pack(fill=BOTH, expand=1)
+
+
 
 	screenbuscaprofessor.mainloop()
 
@@ -409,12 +443,12 @@ def register_student():
 	lb1 = Label(screenregstud, text = "Preencha os dados abaixo", font = 'Garamond', bg = '#F5F5F5')
 	lb1.place(relx=0.5, rely=0.05, anchor=CENTER)
 
-	lb2 = Label(screenregstud, text = "Username * ", font = 'Garamond', bg = '#F5F5F5')
+	lb2 = Label(screenregstud, text = "Usuario * ", font = 'Garamond', bg = '#F5F5F5')
 	username_student_entry = Entry(screenregstud, textvariable = username)
 	lb2.place(relx=0.35, rely=0.17, anchor=CENTER)
 	username_student_entry.place(relx=0.6, rely=0.17, anchor=CENTER)
 	
-	lb3 = Label(screenregstud, text = "Password * ", font = 'Garamond', bg = '#F5F5F5')
+	lb3 = Label(screenregstud, text = "Senha * ", font = 'Garamond', bg = '#F5F5F5')
 	password_student_entry = Entry(screenregstud, textvariable = password, show = "*")
 	lb3.place(relx=0.35, rely=0.24, anchor=CENTER)
 	password_student_entry.place(relx=0.6, rely=0.24, anchor=CENTER)
@@ -444,7 +478,7 @@ def register_student():
 	lb8.place(relx=0.35, rely=0.59, anchor=CENTER)
 	arte_marcial_student_entry.place(relx=0.6, rely=0.59, anchor=CENTER)
 
-	lb9 = Label(screenregstud, text = "Idade * ", font = 'Garamond', bg = '#F5F5F5')
+	lb9 = Label(screenregstud, text = "Ano * ", font = 'Garamond', bg = '#F5F5F5')
 	idade_student_entry = Entry(screenregstud, textvariable = idade)
 	lb9.place(relx=0.35, rely=0.66, anchor=CENTER)
 	idade_student_entry.place(relx=0.6, rely=0.66, anchor=CENTER)
@@ -458,7 +492,7 @@ def register_student():
 	drop.place(relx = 0.5, rely = 0.70)	
 	
 
-	bt1 = Button(screenregstud, text = "Register", height = 1, font = 'Garamond',  bd=5, bg = '#A9A9A9', command = cadastra_estudante_banco)
+	bt1 = Button(screenregstud, text = "Registro", height = 1, font = 'Garamond',  bd=5, bg = '#A9A9A9', command = cadastra_estudante_banco)
 	bt1.config(highlightbackground='#F5F5F5')
 	bt1.place(relx=0.5, rely=0.85, anchor=CENTER)
 	
@@ -515,12 +549,12 @@ def register_professor():
 	lb1 = Label(screenregprof, text = "Preencha os dados abaixo", font = 'Garamond', bg = '#F5F5F5')
 	lb1.place(relx=0.5, rely=0.05, anchor=CENTER)
 
-	lb2 = Label(screenregprof, text = "Username * ", font = 'Garamond', bg = '#F5F5F5')
+	lb2 = Label(screenregprof, text = "Usuario * ", font = 'Garamond', bg = '#F5F5F5')
 	username_professor_entry = Entry(screenregprof, textvariable = username)
 	lb2.place(relx=0.35, rely=0.15, anchor=CENTER)
 	username_professor_entry.place(relx=0.6, rely=0.15, anchor=CENTER)
 	
-	lb3 = Label(screenregprof, text = "Password * ", font = 'Garamond', bg = '#F5F5F5')
+	lb3 = Label(screenregprof, text = "Senha * ", font = 'Garamond', bg = '#F5F5F5')
 	password_professor_entry = Entry(screenregprof, textvariable = password, show = "*")
 	lb3.place(relx=0.35, rely=0.25, anchor=CENTER)
 	password_professor_entry.place(relx=0.6, rely=0.25, anchor=CENTER)
@@ -550,7 +584,7 @@ def register_professor():
 	lb8.place(relx=0.35, rely=0.75, anchor=CENTER)
 	arte_marcial_professor_entry.place(relx=0.6, rely=0.75, anchor=CENTER)
 	
-	bt1 = Button(screenregprof, text = "Register",font = 'Garamond',  bd=5, bg = '#A9A9A9', height = 1, command = cadastra_professor_banco)
+	bt1 = Button(screenregprof, text = "Registro",font = 'Garamond',  bd=5, bg = '#A9A9A9', height = 1, command = cadastra_professor_banco)
 	bt1.place(relx=0.5, rely=0.85, anchor=CENTER)
 	bt1.config(highlightbackground='#F5F5F5')
 	
@@ -623,12 +657,12 @@ def register_supplier():
 	lb1 = Label(screenregsupp, font = 'Garamond', text = "Preencha os dados abaixo", bg = '#F5F5F5')
 	lb1.place(relx=0.5, rely=0.05, anchor=CENTER)
 
-	lb2 = Label(screenregsupp, text = "Username * ",font = 'Garamond', bg = '#F5F5F5')
+	lb2 = Label(screenregsupp, text = "Usuario * ",font = 'Garamond', bg = '#F5F5F5')
 	username_supplier_entry = Entry(screenregsupp, textvariable = username)
 	lb2.place(relx=0.35, rely=0.12, anchor=CENTER)
 	username_supplier_entry.place(relx=0.6, rely=0.12, anchor=CENTER)
 	
-	lb3 = Label(screenregsupp, text = "Password * ",font = 'Garamond', bg = '#F5F5F5')
+	lb3 = Label(screenregsupp, text = "Senha * ",font = 'Garamond', bg = '#F5F5F5')
 	password_supplier_entry = Entry(screenregsupp, textvariable = password, show = "*")
 	lb3.place(relx=0.35, rely=0.19, anchor=CENTER)
 	password_supplier_entry.place(relx=0.6, rely=0.19, anchor=CENTER)
@@ -678,7 +712,7 @@ def register_supplier():
 	lb12.place(relx=0.35, rely=0.82, anchor=CENTER)
 	estado_supplier_entry.place(relx=0.6, rely=0.82, anchor=CENTER)
 	
-	bt1 = Button(screenregsupp, text = "Register", font = 'Garamond',  bd=5, bg = '#A9A9A9', height = 1, command = cadastra_supplier_banco)
+	bt1 = Button(screenregsupp, text = "Registro", font = 'Garamond',  bd=5, bg = '#A9A9A9', height = 1, command = cadastra_supplier_banco)
 	bt1.place(relx=0.5, rely=0.90, anchor=CENTER)
 	bt1.config(highlightbackground='#F5F5F5')
 	
@@ -725,12 +759,12 @@ def register_owner():
 	lb1=Label(screenregowner, text = "Preencha os dados abaixo", font = 'Garamond', bg = '#F5F5F5')
 	lb1.place(relx=0.5, rely=0.05, anchor=CENTER)
 
-	lb2 = Label(screenregowner, text = "Username * ", font = 'Garamond', bg = '#F5F5F5')
+	lb2 = Label(screenregowner, text = "Usuario * ", font = 'Garamond', bg = '#F5F5F5')
 	et2 = Entry(screenregowner, textvariable = username)
 	lb2.place(relx=0.35, rely=0.2, anchor=CENTER)
 	et2.place(relx=0.6, rely=0.2, anchor=CENTER)
 	
-	lb3 = Label(screenregowner, text = "Password * ", font = 'Garamond', bg = '#F5F5F5')
+	lb3 = Label(screenregowner, text = "Senha * ", font = 'Garamond', bg = '#F5F5F5')
 	et3 = Entry(screenregowner, textvariable = password, show = "*")
 	lb3.place(relx=0.35, rely=0.3, anchor=CENTER)
 	et3.place(relx=0.6, rely=0.3, anchor=CENTER)
@@ -750,7 +784,7 @@ def register_owner():
 	lb6.place(relx=0.35, rely=0.6, anchor=CENTER)
 	et6.place(relx=0.6, rely=0.6, anchor=CENTER)
 
-	bt1 = Button(screenregowner, text = "Register", height = 1, font = 'Garamond',  bd=5, bg = '#A9A9A9',command = cadastra_owner_banco)
+	bt1 = Button(screenregowner, text = "Registro", height = 1, font = 'Garamond',  bd=5, bg = '#A9A9A9',command = cadastra_owner_banco)
 	bt1.place(relx=0.5, rely=0.8, anchor=CENTER)
 	bt1.config(highlightbackground='#F5F5F5')
 	
@@ -820,12 +854,12 @@ def login():
 	lb3 = Label(screenlogin, text = "Faca login com seus dados", bg = '#F5F5F5', font = ("Garamond", 15))
 	lb3.place(relx=0.5, rely=0.1, anchor=CENTER)
 	
-	lb1 = Label(screenlogin, text = "Username * ", font = 'Garamond', bg='#F5F5F5')
+	lb1 = Label(screenlogin, text = "Usuario * ", font = 'Garamond', bg='#F5F5F5')
 	lb1.place(relx=0.5, rely=0.3, anchor=CENTER)
 	et1 = username_verify = Entry(screenlogin, textvariable = username)
 	et1.place(relx=0.5, rely=0.35, anchor=CENTER)
 	
-	lb2 = Label(screenlogin, text = "Password * ", font = 'Garamond', bg='#F5F5F5')
+	lb2 = Label(screenlogin, text = "Senha * ", font = 'Garamond', bg='#F5F5F5')
 	lb2.place(relx=0.5, rely=0.5, anchor=CENTER)
 	et2 = password_verify = Entry(screenlogin, textvariable = password, show = "*")
 	et2.place(relx=0.5, rely=0.55, anchor=CENTER)
@@ -897,7 +931,7 @@ def main_screen():
 	#lb = Label(text = "Luta Luta", bg = '#D2B48C', width = "300", height = "2", font = ("Garamond", 13)).pack()
 	
 	bt1 = Button(text = "Login", height = "2", relief = 'groove', bd=9, bg = '#D2B48C',	width = "20", command = lambda: changeWindow12_login(screen), font = ("Garamond", 13))
-	bt2 = Button(text = "Register",height = "2", relief = 'groove', bd=9, bg ='#D2B48C', width = "20", command = lambda: changeWindow12_register(screen), font = ("Garamond", 13))
+	bt2 = Button(text = "Registro",height = "2", relief = 'groove', bd=9, bg ='#D2B48C', width = "20", command = lambda: changeWindow12_register(screen), font = ("Garamond", 13))
 	bt1.config(highlightbackground='black')
 	bt2.config(highlightbackground='black')
 	
