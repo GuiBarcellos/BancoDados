@@ -294,22 +294,20 @@ def busca_professor():
 	scroll_x = Scrollbar(table_frame_professor, orient = HORIZONTAL)
 	scroll_y = Scrollbar(table_frame_professor, orient = VERTICAL)
 	global professor_table
-	professor_table = ttk.Treeview(table_frame_professor, columns = ("Cpf","Nome", "Ano", "Arte Marcial", "Telefone"), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
+	professor_table = ttk.Treeview(table_frame_professor, columns = ("Nome", "Telefone", "Arte Marcial", "Graduacao"), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
 	scroll_x.pack(side = BOTTOM, fill = X)
 	scroll_y.pack(side = RIGHT, fill = Y)
 	scroll_x.config(command=professor_table.xview)
 	scroll_y.config(command=professor_table.yview)
-	professor_table.heading("Cpf", text="CPF")
 	professor_table.heading("Nome", text="Nome")
-	professor_table.heading("Ano", text="Ano")
-	professor_table.heading("Arte Marcial", text="Arte Marcial")
 	professor_table.heading("Telefone", text="Telefone")
+	professor_table.heading("Arte Marcial", text="Arte Marcial")
+	professor_table.heading("Graduacao", text="Graduacao")
 	professor_table['show']='headings'
-	professor_table.column("Cpf", width=50)
 	professor_table.column("Nome", width=220)
-	professor_table.column("Ano", width=28)
-	professor_table.column("Arte Marcial", width=80)
 	professor_table.column("Telefone", width=70)
+	professor_table.column("Arte Marcial", width=80)
+	professor_table.column("Graduacao", width=70)
 	professor_table.pack(fill=BOTH, expand=1)
 
 
