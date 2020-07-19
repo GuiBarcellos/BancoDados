@@ -40,7 +40,7 @@ def signup(db, info, operation):
 
 	#Aluno
 	if operation == 0:
-		cursor.execute("""INSERT INTO ALUNO (CPF, GRADUACAO, ARTE, IDADE, SEXO) VALUES """ 
+		cursor.execute("""INSERT INTO ALUNO (CPF, GRADUACAO, ARTE, ANO_NASC, SEXO) VALUES """ 
 		+ "(" + "'" + info[0] + "'" + ", " + "'" + info[4] + "'" + ", " + "'" + info[5] + "'" 
 		+ ", " + info[6] + ", " + "'" + info[7] + "'" + ");")
 		cursor.execute("""INSERT INTO TIPO (CPF, TIPO) VALUES """ 
@@ -140,7 +140,7 @@ def searchAll():
 	
 	cursor = con.cursor()
 
-	cursor.execute("""SELECT PESSOA.NOME, ALUNO.CPF, ALUNO.IDADE, ALUNO.ARTE, PESSOA.TELEFONE FROM ALUNO, PESSOA
+	cursor.execute("""SELECT PESSOA.NOME, ALUNO.CPF, ALUNO.ANO_NASC, ALUNO.ARTE, PESSOA.TELEFONE FROM ALUNO, PESSOA
 						WHERE ALUNO.CPF = PESSOA.CPF;""")
 
 	type = cursor.fetchall()
@@ -151,7 +151,7 @@ def searchByCpf(db, cpf):
 	
 	cursor = db.cursor()
 
-	cursor.execute("""SELECT PESSOA.NOME, ALUNO.CPF, ALUNO.IDADE, ALUNO.ARTE, PESSOA.TELEFONE FROM ALUNO, PESSOA
+	cursor.execute("""SELECT PESSOA.NOME, ALUNO.CPF, ALUNO.ANO_NASC, ALUNO.ARTE, PESSOA.TELEFONE FROM ALUNO, PESSOA
 						WHERE ALUNO.CPF = PESSOA.CPF AND PESSOA.CPF = """ + "'" + cpf + "'" + ";")
 
 	type = cursor.fetchall()
@@ -162,8 +162,8 @@ def searchByName(db, nome):
 	
 	cursor = db.cursor()
 
-	cursor.execute("""SELECT PESSOA.NOME, ALUNO.CPF, ALUNO.IDADE, ALUNO.ARTE, PESSOA.TELEFONE FROM ALUNO, PESSOA
-						WHERE ALUNO.CPF = PESSOA.CPF AND UPPER(PESSOA.NOME) LIKE UPPER(""" + "'" + nome + "%" + "'" + ")" + ";")
+	cursor.execute("""SELECT PESSOA.NOME, ALUNO.CPF, ALUNO.ANO_NASC, ALUNO.ARTE, PESSOA.TELEFONE FROM ALUNO, PESSOA
+						WHERE ALUNO.CPF = PESSOA.CPF AND UPPER(PESSOA.NOME) LIKE UPPER(""" + "'" + "%" + nome + "%" + "'" + ")" + ";")
 
 	type = cursor.fetchall()
 
