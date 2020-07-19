@@ -86,9 +86,9 @@ print("Database opened successfully")
 
 #info = ["41828381828", "@lucao", "Lucas", "11924232222", "Branca", "Karate", "20", "M"]
 #info = ["48120029153", "@gabriel", "Gabriel", "11224532521", "Branca", "Muay-Thai", "19", "M"]
-info = ["48120029153", "@gabriel", "Gabriel", "11324231521", "Preta", "Taekwondo", "19", "M"]
+#info = ["48120029153", "@gabriel", "Gabriel", "11324231521", "Preta", "Taekwondo", "19", "M"]
 
-signup(con, info, 1)
+#signup(con, info, 1)
 
 #info = ["45865482648545", "Tech Insertion", "techins", "11924132222", "11923131242", "Rasmussen de Andrade", "13", "19203010", "SP", "Sao Jose do Rio Preto"]
 

@@ -1,7 +1,91 @@
 from tkinter import *
 from tkinter import ttk
+import psycopg2
 
-#INSIRA CODIGO BD AQUI
+
+#CODIGO BANCO DE DADOS -------------------------------------------------------------------------------------------------------
+#CODIGO BANCO DE DADOS -------------------------------------------------------------------------------------------------------
+#CODIGO BANCO DE DADOS -------------------------------------------------------------------------------------------------------
+#CODIGO BANCO DE DADOS -------------------------------------------------------------------------------------------------------
+
+
+#Funcao que cadastra um usuario no banco de dados.
+#O objetivo eh que essa funcao seja soh uma parte do programa principal
+#@Parametros:
+#	- db: a base de dados retornada da funcao connect()
+#	- info: vetor com informacoes sobre a pessoa estruturado da seguinte forma:
+#	info [0] | [1]  |  [2]  | [3]  |  [4]  |  [5]    | [6]    |  [7]
+#		 CPF   user	  nome    tel    grad 	 arte m.   idade     Sexo
+#   - operacao: 0: add aluno; 1: add prof, 2: add locador;
+#Retorna 0 se deu certo, 1 se deu errado
+def signup(db, info, operation):
+
+
+	cursor = db.cursor()
+
+	cursor.execute("""SELECT CPF FROM PESSOA WHERE USERNAME = """ + "'" + info[1] + "'" + ";")
+	test = cursor.fetchone()
+
+	if test != None:
+		return 1
+
+	cursor.execute("""SELECT USERNAME FROM PESSOA WHERE CPF = """ + "'" + info[0] + "'" + ";")
+	test = cursor.fetchone()
+
+	if test == None:
+		cursor.execute("""INSERT INTO PESSOA (CPF, USERNAME, NOME, TELEFONE) VALUES """ 
+		+ "(" + "'" + info[0] + "'" + ", " + "'" + info[1] + "'" + ", " + "'" + info[2] + "'" 
+		+ ", " + "'" + info[3] + "'" + ");")
+
+
+	#Aluno
+	if operation == 0:
+		cursor.execute("""INSERT INTO ALUNO (CPF, GRADUACAO, ARTE, IDADE, SEXO) VALUES """ 
+		+ "(" + "'" + info[0] + "'" + ", " + "'" + info[4] + "'" + ", " + "'" + info[5] + "'" 
+		+ ", " + info[6] + ", " + "'" + info[7] + "'" + ");")
+		cursor.execute("""INSERT INTO TIPO (CPF, TIPO) VALUES """ 
+		+ "(" + "'" + info[0] + "'" + ", " + "'Aluno'" + ");")
+		
+
+	#Professor
+	elif operation == 1:
+		cursor.execute("""INSERT INTO PROFESSOR (CPF, GRADUACAO, ARTE) VALUES """ 
+		+ "(" + "'" + info[0] + "'" + ", " + "'" + info[4] + "'" + ", " + "'" + info[5] + "'" + ");")
+		cursor.execute("""INSERT INTO TIPO (CPF, TIPO) VALUES """ 
+		+ "(" + "'" + info[0] + "'" + ", " + "'Professor'" + ");")
+
+	#Locador
+	elif operation == 2:
+		cursor.execute("""INSERT INTO TIPO (CPF, TIPO) VALUES """ 
+		+ "(" + "'" + info[0] + "'" + ", " + "'Locador'" + ");")
+
+	return 0
+
+#Funcao que cadastra um FORNECEDOR no banco de dados.
+#O objetivo eh que essa funcao seja soh uma parte do programa principal
+#@Parametros:
+#	- db: a base de dados retornada da funcao connect()
+#	- info: vetor com informacoes sobre a pessoa estruturado da seguinte forma:
+#	info [0]  |  [1]  |  [2]  |  [3]  |  [4]  |  [5]    | [6]    |  [7]  |  [8]  |  [9]  | 
+#		 CNPJ   nome	 user   tel1   tel2 	 rua      num      cep    estado   cidade
+def signProvider(db, info):
+	
+	cursor = db.cursor()
+	cursor.execute("""INSERT INTO FORNECEDOR (CNPJ, NOME, USERNAME, TELEFONE1, TELEFONE2, RUA, NUMERO, CEP, ESTADO, CIDADE) VALUES """ 
+	+ "(" + "'" + info[0] + "'" + ", " + "'" + info[1] + "'" + ", " + "'" + info[2] + "'" 
+	+ ", " + "'" + info[3] + "'" + ", " + "'" + info[4] + "'" + ", " + "'" + info[5] + "'"
+	+ ", " + "'" + info[6] + "'" + ", " + "'" + info[7] + "'" + ", " + "'" + info[8] + "'" 
+	+ ", " + "'" + info[9] + "'" + ");")
+
+	print("Insertion made successfully")
+	
+
+
+
+#CODIGO BANCO DE DADOS -------------------------------------------------------------------------------------------------------
+#CODIGO BANCO DE DADOS -------------------------------------------------------------------------------------------------------
+#CODIGO BANCO DE DADOS -------------------------------------------------------------------------------------------------------
+#CODIGO BANCO DE DADOS -------------------------------------------------------------------------------------------------------
 
 def changeWindow21(screen):
 	screen.destroy()
@@ -214,7 +298,7 @@ def login_verify(flag):
 	user_login = username_verify.get()
 	password_login = password_verify.get()
 	 
-	if user_login == "gui": #Aqui verifica na base dados se o login existe
+	if user_login != "": 
 		print("Login Sucesso")
 		tela_opcoes()
 		
@@ -228,41 +312,31 @@ def login_verify(flag):
 		flag.append(0)
 	
 
-"""
-def register_user():
-	username_info = username.get()
-	password_info = password.get()
-	file = open(username_info, "w")
-	file.write(username_info+"\n")
-	file.write(password_info+"\n")
-	file.close()
-	username_entry.delete(0, END)
-	password_entry.delete(0, END)
-	Label(screen1, text = "Registro concluido", fg = "green", font = ("Calibri", 12)).pack()
-def register():
-	global screen1
-	screen1 = Toplevel(screen)
-	screen1.title("Register")
-	screen1.geometry("600x350")
-	global username
-	global password
-	global username_entry
-	global password_entry
-	username = StringVar()
-	password = StringVar()
-	Label(screen1, text = "Preencha os dados abaixo:").pack()
-	Label(screen1, text = "").pack()
-	Label(screen1, text = "Username * ").pack()
-	username_entry = Entry(screen1, textvariable = username)
-	username_entry.pack()
-	Label(screen1, text = "Password * ").pack()
-	password_entry = Entry(screen1, textvariable = password, show = "*")
-	password_entry.pack()
-	Label(screen1, text = "").pack()
-	Button(screen1, text = "Register", height = 1, command = register_user).pack()
-"""
+
+
 def cadastra_estudante_banco():
 	
+
+	
+
+	cpf = cpf_student_entry.get()
+	usuario = username_student_entry.get()
+	nome = nome_student_entry.get()
+	telefone = telefone_student_entry.get()
+	graduacao = graduacao_student_entry.get()
+	arte_marcial = arte_marcial_student_entry.get()
+	idade = idade_student_entry.get()
+	sexo = clicked_sexo.get()
+
+	if sexo == "Masculino":
+		sexo = "M"
+	else:
+		sexo = "F"
+
+	info = [cpf, usuario, nome, telefone, graduacao, arte_marcial, idade, sexo]
+
+	signup(con, info, 0)
+
 	username_student_entry.delete(0,END)
 	password_student_entry.delete(0, END)
 	cpf_student_entry.delete(0,END)
@@ -271,11 +345,12 @@ def cadastra_estudante_banco():
 	graduacao_student_entry.delete(0,END)
 	arte_marcial_student_entry.delete(0,END)
 	idade_student_entry.delete(0,END)
-	sexo_student_entry.delete(0,END)
+	
 
 
 	lb1 = Label(screenregstud, text = "Registro concluido", bg = '#F5F5F5',fg = "green", font = ("Garamond", 12))
 	lb1.place(relx=0.5, rely=0.95, anchor=CENTER)
+	con.commit()
 
 def register_student():
 	global screenregstud
@@ -293,7 +368,7 @@ def register_student():
 	global graduacao_student_entry
 	global arte_marcial_student_entry
 	global idade_student_entry
-	global sexo_student_entry
+	
 
 	lb1 = Label(screenregstud, text = "Preencha os dados abaixo", font = 'Garamond', bg = '#F5F5F5')
 	lb1.place(relx=0.5, rely=0.05, anchor=CENTER)
@@ -339,11 +414,14 @@ def register_student():
 	idade_student_entry.place(relx=0.6, rely=0.66, anchor=CENTER)
 	
 	lb10 = Label(screenregstud, text = "Sexo * ", font = 'Garamond', bg = '#F5F5F5')
-	sexo_student_entry = Entry(screenregstud, textvariable = sexo)
 	lb10.place(relx=0.35, rely=0.73, anchor=CENTER)
-	sexo_student_entry.place(relx=0.6, rely=0.73, anchor=CENTER)
+	global clicked_sexo
+	clicked_sexo = StringVar()
+	clicked_sexo.set("Masculino")
+	drop = OptionMenu(screenregstud, clicked_sexo, "Masculino", "Feminino")
+	drop.place(relx = 0.5, rely = 0.70)	
 	
-	
+
 	bt1 = Button(screenregstud, text = "Register", height = 1, font = 'Garamond',  bd=5, bg = '#A9A9A9', command = cadastra_estudante_banco)
 	bt1.config(highlightbackground='#F5F5F5')
 	bt1.place(relx=0.5, rely=0.85, anchor=CENTER)
@@ -356,6 +434,18 @@ def register_student():
 
 
 def cadastra_professor_banco():
+
+
+	cpf = cpf_professor_entry.get()
+	usuario = username_professor_entry.get()
+	nome = nome_professor_entry.get()
+	telefone = telefone_professor_entry.get()
+	graduacao = graduacao_professor_entry.get()
+	arte_marcial = arte_marcial_professor_entry.get()
+
+	info = [cpf, usuario, nome, telefone, graduacao, arte_marcial]
+
+	signup(con, info, 1)
 	
 	username_professor_entry.delete(0,END)
 	password_professor_entry.delete(0, END)
@@ -367,6 +457,7 @@ def cadastra_professor_banco():
 
 	lb1 = Label(screenregprof, text = "Registro concluido", bg = '#F5F5F5',fg = "green", font = ("Garamond", 12))
 	lb1.place(relx=0.5, rely=0.95, anchor=CENTER)
+	con.commit()
 
 
 def register_professor():
@@ -434,16 +525,41 @@ def register_professor():
 	screenregprof.mainloop()
 
 def cadastra_supplier_banco():
-	
+
+
+	usuario = username_supplier_entry.get()
+	cnpj = cnpj_supplier_entry.get()
+	telefone = telefone_supplier_entry.get()
+	telefone2 = telefone2_supplier_entry.get()
+	nome = nome_supplier_entry.get()
+	rua = rua_supplier_entry.get()
+	numero = numero_supplier_entry.get()
+	cep = cep_supplier_entry.get()
+	estado = estado_supplier_entry.get()
+	cidade = cidade_supplier_entry.get()
+
+
+	info = [cnpj, nome, usuario, telefone, telefone2, rua, numero, cep, estado, cidade]
+	signProvider(con, info)
+
+
+
 	username_supplier_entry.delete(0,END)
 	password_supplier_entry.delete(0, END)
-	cpf_supplier_entry.delete(0,END)
+	cnpj_supplier_entry.delete(0,END)
 	telefone_supplier_entry.delete(0,END)
 	nome_supplier_entry.delete(0,END)
+	telefone2_supplier_entry.delete(0,END)
+	rua_supplier_entry.delete(0,END)
+	numero_supplier_entry.delete(0,END)
+	cep_supplier_entry.delete(0,END)
+	estado_supplier_entry.delete(0,END)
+	cidade_supplier_entry.delete(0,END)
 	
 
 	lb1 = Label(screenregsupp, bg = '#F5F5F5', text = "Registro concluido", fg = "green", font = ("Garamond", 12))
 	lb1.place(relx=0.5, rely=0.9, anchor=CENTER)
+	con.commit()
 		
 
 
@@ -458,40 +574,76 @@ def register_supplier():
 	
 	global username_supplier_entry
 	global password_supplier_entry
-	global cpf_supplier_entry
+	global cnpj_supplier_entry
 	global telefone_supplier_entry
 	global nome_supplier_entry
+	global telefone2_supplier_entry
+	global rua_supplier_entry
+	global numero_supplier_entry
+	global cep_supplier_entry
+	global estado_supplier_entry
+	global cidade_supplier_entry
 	
 	lb1 = Label(screenregsupp, font = 'Garamond', text = "Preencha os dados abaixo", bg = '#F5F5F5')
 	lb1.place(relx=0.5, rely=0.05, anchor=CENTER)
 
 	lb2 = Label(screenregsupp, text = "Username * ",font = 'Garamond', bg = '#F5F5F5')
 	username_supplier_entry = Entry(screenregsupp, textvariable = username)
-	lb2.place(relx=0.35, rely=0.2, anchor=CENTER)
-	username_supplier_entry.place(relx=0.6, rely=0.2, anchor=CENTER)
+	lb2.place(relx=0.35, rely=0.12, anchor=CENTER)
+	username_supplier_entry.place(relx=0.6, rely=0.12, anchor=CENTER)
 	
 	lb3 = Label(screenregsupp, text = "Password * ",font = 'Garamond', bg = '#F5F5F5')
 	password_supplier_entry = Entry(screenregsupp, textvariable = password, show = "*")
-	lb3.place(relx=0.35, rely=0.3, anchor=CENTER)
-	password_supplier_entry.place(relx=0.6, rely=0.3, anchor=CENTER)
+	lb3.place(relx=0.35, rely=0.19, anchor=CENTER)
+	password_supplier_entry.place(relx=0.6, rely=0.19, anchor=CENTER)
 	
-	lb4 = Label(screenregsupp, text = "CPF * ",font = 'Garamond', bg = '#F5F5F5')
-	cpf_supplier_entry = Entry(screenregsupp, textvariable = cpf)
-	lb4.place(relx=0.35, rely=0.4, anchor=CENTER)
-	cpf_supplier_entry.place(relx=0.6, rely=0.4, anchor=CENTER)
+	lb4 = Label(screenregsupp, text = "CNPJ * ",font = 'Garamond', bg = '#F5F5F5')
+	cnpj_supplier_entry = Entry(screenregsupp, textvariable = cnpj)
+	lb4.place(relx=0.35, rely=0.26, anchor=CENTER)
+	cnpj_supplier_entry.place(relx=0.6, rely=0.26, anchor=CENTER)
 	
 	lb5 = Label(screenregsupp, text = "Telefone * ",font = 'Garamond', bg = '#F5F5F5')
 	telefone_supplier_entry = Entry(screenregsupp, textvariable = telefone)
-	lb5.place(relx=0.35, rely=0.5, anchor=CENTER)
-	telefone_supplier_entry.place(relx=0.6, rely=0.5, anchor=CENTER)
+	lb5.place(relx=0.35, rely=0.33, anchor=CENTER)
+	telefone_supplier_entry.place(relx=0.6, rely=0.33, anchor=CENTER)
 
 	lb6 = Label(screenregsupp, text = "Nome * ",font = 'Garamond', bg = '#F5F5F5')
 	nome_supplier_entry = Entry(screenregsupp, textvariable = nome)
-	lb6.place(relx=0.35, rely=0.6, anchor=CENTER)
-	nome_supplier_entry.place(relx=0.6, rely=0.6, anchor=CENTER)
+	lb6.place(relx=0.35, rely=0.40, anchor=CENTER)
+	nome_supplier_entry.place(relx=0.6, rely=0.40, anchor=CENTER)
+
+	lb7 = Label(screenregsupp, text = "Telefone 2 * ",font = 'Garamond', bg = '#F5F5F5')
+	telefone2_supplier_entry = Entry(screenregsupp, textvariable = telefone2)
+	lb7.place(relx=0.35, rely=0.47, anchor=CENTER)
+	telefone2_supplier_entry.place(relx=0.6, rely=0.47, anchor=CENTER)
+
+	lb8 = Label(screenregsupp, text = "Rua * ",font = 'Garamond', bg = '#F5F5F5')
+	rua_supplier_entry = Entry(screenregsupp, textvariable = rua)
+	lb8.place(relx=0.35, rely=0.54, anchor=CENTER)
+	rua_supplier_entry.place(relx=0.6, rely=0.54, anchor=CENTER)
+
+	lb9 = Label(screenregsupp, text = "Numero * ",font = 'Garamond', bg = '#F5F5F5')
+	numero_supplier_entry = Entry(screenregsupp, textvariable = numero)
+	lb9.place(relx=0.35, rely=0.61, anchor=CENTER)
+	numero_supplier_entry.place(relx=0.6, rely=0.61, anchor=CENTER)
+
+	lb10 = Label(screenregsupp, text = "CEP * ",font = 'Garamond', bg = '#F5F5F5')
+	cep_supplier_entry = Entry(screenregsupp, textvariable = cep)
+	lb10.place(relx=0.35, rely=0.68, anchor=CENTER)
+	cep_supplier_entry.place(relx=0.6, rely=0.68, anchor=CENTER)
+
+	lb11 = Label(screenregsupp, text = "Cidade * ",font = 'Garamond', bg = '#F5F5F5')
+	cidade_supplier_entry = Entry(screenregsupp, textvariable = cidade)
+	lb11.place(relx=0.35, rely=0.75, anchor=CENTER)
+	cidade_supplier_entry.place(relx=0.6, rely=0.75, anchor=CENTER)
+
+	lb12 = Label(screenregsupp, text = "Estado * ",font = 'Garamond', bg = '#F5F5F5')
+	estado_supplier_entry = Entry(screenregsupp, textvariable = estado)
+	lb12.place(relx=0.35, rely=0.82, anchor=CENTER)
+	estado_supplier_entry.place(relx=0.6, rely=0.82, anchor=CENTER)
 	
 	bt1 = Button(screenregsupp, text = "Register", font = 'Garamond',  bd=5, bg = '#A9A9A9', height = 1, command = cadastra_supplier_banco)
-	bt1.place(relx=0.5, rely=0.8, anchor=CENTER)
+	bt1.place(relx=0.5, rely=0.90, anchor=CENTER)
 	bt1.config(highlightbackground='#F5F5F5')
 	
 	bvoltar = Button(screenregsupp, text = "Voltar",font = 'Garamond',  bd=5, bg = '#A9A9A9', command = lambda: changeWindow32(screenregsupp))
@@ -503,6 +655,17 @@ def register_supplier():
 
 def cadastra_owner_banco():
 
+
+	cpf = et4.get()
+	usuario = et2.get()
+	nome = et6.get()
+	telefone = et5.get()
+	
+
+	info = [cpf, usuario, nome, telefone]
+
+	signup(con, info, 2)
+
 	et2.delete(0,END)
 	et3.delete(0,END)
 	et4.delete(0,END)
@@ -511,7 +674,7 @@ def cadastra_owner_banco():
 	
 	lb1 = Label(screenregowner, text = "Registro concluido", fg = "green", bg = '#F5F5F5', font = ("Garamond", 12))
 	lb1.place(relx=0.5, rely=0.9, anchor=CENTER)
-	
+	con.commit()
 
 def register_owner():
 	global screenregowner
@@ -547,7 +710,7 @@ def register_owner():
 	et5.place(relx=0.6, rely=0.5, anchor=CENTER)
 
 	lb6 = Label(screenregowner, text = "Nome * ", font = 'Garamond', bg = '#F5F5F5')
-	et6 = nome_owner_entry = Entry(screenregowner, textvariable = nome)
+	et6 = Entry(screenregowner, textvariable = nome)
 	lb6.place(relx=0.35, rely=0.6, anchor=CENTER)
 	et6.place(relx=0.6, rely=0.6, anchor=CENTER)
 
@@ -666,6 +829,14 @@ def main_screen():
 	global arte_marcial #Aluno, Professor
 	global sexo #Aluno
 	global idade #Aluno
+	global cnpj #Fornecedor
+	global telefone2 #Fornecedor
+	global rua #Fornecedor
+	global numero #Fornecedor
+	global cep #Fornecedor
+	global estado #Fornecedor
+	global cidade #Fornecedor
+
 	username = StringVar()
 	password = StringVar()
 	cpf = StringVar()
@@ -675,7 +846,13 @@ def main_screen():
 	arte_marcial = StringVar()
 	sexo = StringVar()
 	idade = StringVar()
-
+	cnpj = StringVar()
+	telefone2 = StringVar()
+	rua = StringVar()
+	numero = StringVar()
+	cep = StringVar()
+	estado = StringVar()
+	cidade = StringVar()
 	
 	img = PhotoImage(file="img-1.png")
 	lb_image = Label(screen, image=img)
@@ -691,6 +868,14 @@ def main_screen():
 	bt1.place(relx=0.5, rely=0.4, anchor=CENTER)
 	bt2.place(relx=0.5, rely=0.6, anchor=CENTER)
 	
+
 	screen.mainloop()
 
+
+con = psycopg2.connect(database="BancoDados", user="gui", password="123", host="127.0.0.1", port="5432")
+print("Database opened successfully")
+
+
 main_screen()
+con.close()
+print("Database foi fechada")
