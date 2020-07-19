@@ -281,7 +281,7 @@ def busca_professor():
 	screenbuscaprofessor.geometry("850x720+%d+%d" %(posx, posy))
 	screenbuscaprofessor['bg'] = '#F5F5F5'
 
-	lbl_search = Label(screenbuscaprofessor, text = "Procurar por:", bg = '#F5F5F5',fg = "black", font = ("times nem roman", 15, "bold"))
+	lbl_search = Label(screenbuscaprofessor, text = "Qual arte marcial voce deseja praticar?:", bg = '#F5F5F5',fg = "black", font = ("times nem roman", 15, "bold"))
 	lbl_search.grid(row = 0, column = 0, pady = 10, padx = 10, sticky = "w")
 
 
@@ -343,10 +343,10 @@ def tela_opcoes():
 	bt1.place(relx=0.5, rely=0.2, anchor=CENTER)
 	
 	bt2=Button(screenoptions, text = "Professor", width = 20, height = 2, font = 'Garamond',  bd=5, bg = '#A9A9A9', command = busca_professor)
-	bt2.place(relx=0.5, rely=0.3, anchor=CENTER)
+	bt2.place(relx=0.5, rely=0.4, anchor=CENTER)
 		
 	bt4=Button(screenoptions, text = "Arte Marcial", width = 20, height = 2,  font = 'Garamond',  bd=5, bg = '#A9A9A9', command = busca_arte_marcial)
-	bt4.place(relx=0.5, rely=0.4, anchor=CENTER)
+	bt4.place(relx=0.5, rely=0.6, anchor=CENTER)
 	
 
 	
