@@ -145,6 +145,13 @@ def searchAll():
 
 	type = cursor.fetchall()
 
+	records = student_table.get_children()
+	for element in records:
+		student_table.delete(element)
+
+	for row in type:
+		student_table.insert("", "end", values=(row[1], row[0], row[2], row[3], row[4]))
+
 	print(type)
 
 def searchByCpf(db, cpf):
@@ -155,6 +162,13 @@ def searchByCpf(db, cpf):
 						WHERE ALUNO.CPF = PESSOA.CPF AND PESSOA.CPF = """ + "'" + cpf + "'" + ";")
 
 	type = cursor.fetchall()
+
+	records = student_table.get_children()
+	for element in records:
+		student_table.delete(element)
+
+	for row in type:
+		student_table.insert("", "end", values=(row[1], row[0], row[2], row[3], row[4]))
 
 	print(type)
 
@@ -167,6 +181,14 @@ def searchByName(db, nome):
 
 	type = cursor.fetchall()
 
+	records = student_table.get_children()
+	for element in records:
+		student_table.delete(element)
+
+	for row in type:
+		student_table.insert("", "end", values=(row[1], row[0], row[2], row[3], row[4]))
+
+	
 
 	print(type)
 
@@ -222,27 +244,29 @@ def busca_aluno():
 	showbtt = Button(screenbuscaaluno, text = "Mostrar Tudo", width = 8, command = searchAll).place(relx = 0.85, rely = 0.015)
 
 #Table Frame----------------------------
+	global table_frame
 	table_frame = Frame(screenbuscaaluno, bd = 4, relief = RIDGE, bg = "white")
 	table_frame.place(x = 10, y = 100, width = 825, height = 600)	
 
 	scroll_x = Scrollbar(table_frame, orient = HORIZONTAL)
 	scroll_y = Scrollbar(table_frame, orient = VERTICAL)
-	student_table = ttk.Treeview(table_frame, columns = ("Cpf","Nome", "Idade", "Arte Marcial", "Telefone"), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
+	global student_table
+	student_table = ttk.Treeview(table_frame, columns = ("Cpf","Nome", "Ano", "Arte Marcial", "Telefone"), xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
 	scroll_x.pack(side = BOTTOM, fill = X)
 	scroll_y.pack(side = RIGHT, fill = Y)
 	scroll_x.config(command=student_table.xview)
 	scroll_y.config(command=student_table.yview)
 	student_table.heading("Cpf", text="CPF")
 	student_table.heading("Nome", text="Nome")
-	student_table.heading("Idade", text="Idade")
+	student_table.heading("Ano", text="Ano")
 	student_table.heading("Arte Marcial", text="Arte Marcial")
 	student_table.heading("Telefone", text="Telefone")
 	student_table['show']='headings'
-	student_table.column("Cpf", width=110)
-	student_table.column("Nome", width=200)
-	student_table.column("Idade", width=40)
+	student_table.column("Cpf", width=50)
+	student_table.column("Nome", width=220)
+	student_table.column("Ano", width=28)
 	student_table.column("Arte Marcial", width=80)
-	student_table.column("Telefone", width=80)
+	student_table.column("Telefone", width=70)
 	student_table.pack(fill=BOTH, expand=1)
 
 
@@ -884,7 +908,7 @@ def main_screen():
 	screen.mainloop()
 
 
-con = psycopg2.connect(database="mateus", user="mateus", password="mateus", host="127.0.0.1", port="5432")
+con = psycopg2.connect(database="BancoDados", user="gui", password="123", host="127.0.0.1", port="5432")
 print("Database opened successfully")
 
 
